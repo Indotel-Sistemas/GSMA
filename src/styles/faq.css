@@ -1,0 +1,14 @@
+
+
+.faq__listbox{
+    -moz-box-shadow:    inset 0 0 5px #cccccc;
+    -webkit-box-shadow: inset 0 0 5px #cccccc;
+    box-shadow:         inset 0 0 5px #cccccc;
+    border-radius: 5px;
+    padding: 15px 30px;
+    width: 300px;
+    min-width: 300px;
+    min-height: 400px;
+    max-height: 400px;
+    overflow-y: scroll;
+}
