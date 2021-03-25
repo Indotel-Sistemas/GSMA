@@ -1,7 +1,16 @@
 .general__mainContainer{
     margin: 50px 100px;
+    display: flex;
 }
 
 .general__click{
     cursor: pointer;
+}
+
+@media only screen and (max-width:550px) {
+    .general__mainContainer{
+        margin: 30px 0px;
+        flex-direction: column;
+        align-items: center;
+    }
 }

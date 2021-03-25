@@ -8,3 +8,29 @@ export const GETfaq = () => {
         return response.data
     });
 }
+
+export const nuevaFAQ = (data) => {
+
+    return Axios.post(`http://localhost:5000/FAQ/add`,{
+        ...data
+    }).then(response=>{
+        return response.status
+    })
+}
+
+export const editarFAQ = (data) => {
+
+    return Axios.post(`http://localhost:5000/FAQ/edit`,{
+        ...data
+    }).then(response=>{
+        return response.status
+    })
+}
+
+export const eliminarFAQ = (Id) => {
+
+    return Axios.post(`http://localhost:5000/FAQ/delete`,{ Id })
+        .then(response=>{
+            return response.status
+        })
+}
