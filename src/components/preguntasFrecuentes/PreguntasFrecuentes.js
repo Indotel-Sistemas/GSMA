@@ -30,11 +30,14 @@ export const PreguntasFrecuentes = () => {
                     reset();
                     setnumeroPregunta(i);
                     setActiveFAQ(faq);
+                    setStatus(null)
+                  
                 }})
         }else{
             reset();
             setnumeroPregunta(i);
             setActiveFAQ(faq);
+            setStatus(null)
         }
     }   
 
@@ -51,7 +54,9 @@ export const PreguntasFrecuentes = () => {
                 setActiveFAQ([]);
                 setnumeroPregunta(0);
                 reset();
+                setStatus(null)
             }})
+
     }
 
     // Valores del formulario------------------------------------------------------------------------------------------
@@ -60,22 +65,28 @@ export const PreguntasFrecuentes = () => {
         // Limpia los valores de todo el formulario.
     const [ formValues, handleInputChange, reset ] = useForm({ //Valores iniciales del formulario pasados en un objeto.
         Pregunta: '',
-        Respuesta: '',
-        Disponible: true
+        Respuesta: ''
     });
     
     const { Pregunta, Respuesta } = formValues; //Se extraen los valores del formulario  para su uso.
-
+    const [Status, setStatus] = useState();
+    
+    const handleStatus = () =>{
+        setStatus(!Status)
+        setActiveFAQ({...activeFAQ, Status: !Status})
+    }
+    
     //Envío del formulario----------------------------------------------------------------------------------------------
     const handleSubmit = async (e) =>{
         e.preventDefault(); //Previene la actualizacion del formulario.
-        
+    
         if(activeFAQ.Id){ //Si hay  Id es actualizacion de pregunta existente.
            
             const data ={
                 Id: activeFAQ.Id,
                 Pregunta: Pregunta || activeFAQ.Pregunta,
-                Respuesta: Respuesta || activeFAQ.Respuesta
+                Respuesta: Respuesta || activeFAQ.Respuesta,
+                Status: Status || activeFAQ.Status
             }
 
             const POST = await editarFAQ(data)
@@ -83,7 +94,7 @@ export const PreguntasFrecuentes = () => {
             if(POST === 200){
                 reset();
                 setActiveFAQ([]);
-                
+                setStatus(null);
                 Swal.fire(
                 'Editada',
                 '',
@@ -98,23 +109,33 @@ export const PreguntasFrecuentes = () => {
             }
             
         }else{//Agregar una nueva pregunta.
-            const data ={
-                Pregunta: Pregunta,
-                Respuesta: Respuesta,
-            }
-            const POST = await nuevaFAQ(data);
-            
-            if(POST === 200){
-                reset();
-
-                Swal.fire(
-                'Agregada',
-                '',
-                'success'
-                )
+            console.log(Status)
+            if( Pregunta && Respuesta && (Status === true || Status === false) ){
+                const data ={
+                        Pregunta,
+                        Respuesta,
+                        Status
+                    }
+                    const POST = await nuevaFAQ(data);
+                    
+                    if(POST === 200){
+                        reset();
+                        setStatus(null);
+                        Swal.fire(
+                        'Agregada',
+                        '',
+                        'success'
+                        )
+                    }else{
+                        Swal.fire(
+                            'Pregunta no agregada',
+                            '',
+                            'error'
+                        )
+                    }
             }else{
                 Swal.fire(
-                    'Pregunta no agregada',
+                    'Todos los campos deben ser llenados',
                     '',
                     'error'
                 )
@@ -166,7 +187,6 @@ export const PreguntasFrecuentes = () => {
                     {
                         faqs &&
                             faqs.map( (faq, i) => (
-                                faq.Status &&
                                 <div key={ faq.Id } onClick={ () => { handleActiveFAQ( faq, i ) } }>
                                     <h6 className="general__click">{++i}. { faq.Pregunta }</h6>
                                 </div>
@@ -203,13 +223,34 @@ export const PreguntasFrecuentes = () => {
                             <textarea 
                                 name="Respuesta" 
                                 className="form-control mt-2"  
-                                rows="3"  
+                                rows="8"  
                                 placeholder="Respuesta"
                                 value = { Respuesta || activeFAQ.Respuesta || '' }
                                 onChange={ handleInputChange }
                             />
                         </div>
 
+                        {/* Campo respuesta------------------------------------------------*/}
+                      
+                
+                            <label htmlFor="Respuesta">Status</label>
+                            <div className="d-flex mb-4">
+                                <div className="form-check ">
+                                    <input className="form-check-input" type="radio" name="Status" value={ true } checked={ activeFAQ.Status === true || Status === true }  onChange={ handleStatus } />
+                                    <label className="form-check-label" htmlFor="flexRadioDefault1">
+                                        Activo
+                                    </label>
+                                </div>
+                                <div className="form-check mx-4">
+                                    <input className="form-check-input" type="radio" name="Status" value={ false } checked={ activeFAQ.Status === false || Status === false  }  onChange={ handleStatus }  />
+                                    <label className="form-check-label" htmlFor="flexRadioDefault2">
+                                        No activo
+                                    </label>
+                                </div>
+                            </div>
+                     
+                        
+                       
                         {/* Guardar--------------------------------------------------------*/}
                         <button  
                             type="submit" 
