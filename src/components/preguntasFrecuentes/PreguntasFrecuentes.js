@@ -188,7 +188,7 @@ export const PreguntasFrecuentes = () => {
                         faqs &&
                             faqs.map( (faq, i) => (
                                 <div key={ faq.Id } onClick={ () => { handleActiveFAQ( faq, i ) } }>
-                                    <h6 className="general__click">{++i}. { faq.Pregunta }</h6>
+                                    <h6 className={ `general__click ${!faq.Status && 'text-danger'} pb-2` }>{++i}. { faq.Pregunta }</h6>
                                 </div>
                             ))
                     }
