@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import { BsCircleFill } from "react-icons/bs";
+
 
 import { GETfaq, nuevaFAQ, editarFAQ, eliminarFAQ } from '../../helpers/database'
 import { useForm } from "../../hooks/useForm";
@@ -14,6 +16,11 @@ export const PreguntasFrecuentes = () => {
     })
     }, [setFaqs])//Si uno de los valores del arreglo cambia se ejecuta el useEffect
 
+    const actualizarPreguntas = () =>{
+        GETfaq().then(data => { //Se obtienen las preguntas de la base de datos.
+            setFaqs(data) //faqs = data
+        })
+    }
     // Pregunta activa, valores y acciones-----------------------------------------------------------------------------
     const [activeFAQ, setActiveFAQ] = useState([]); // State de preguntas activa para editar.
     const [numeroPregunta, setnumeroPregunta] = useState(0); //State del numero de la pregunta por el orden dispuesto.
@@ -30,7 +37,7 @@ export const PreguntasFrecuentes = () => {
                     reset();
                     setnumeroPregunta(i);
                     setActiveFAQ(faq);
-                    setStatus(null)
+                    setStatus(null);
                   
                 }})
         }else{
@@ -79,7 +86,8 @@ export const PreguntasFrecuentes = () => {
     //Envío del formulario----------------------------------------------------------------------------------------------
     const handleSubmit = async (e) =>{
         e.preventDefault(); //Previene la actualizacion del formulario.
-    
+        const Orden = faqs.length === 0 ? 1 : faqs.length + 1 ;
+        
         if(activeFAQ.Id){ //Si hay  Id es actualizacion de pregunta existente.
            
             const data ={
@@ -100,6 +108,10 @@ export const PreguntasFrecuentes = () => {
                 '',
                 'success'
                 )
+                
+                //Hace GET de formularios------------------
+                actualizarPreguntas();
+
             }else{
                 Swal.fire(
                     'Pregunta no editada',
@@ -109,12 +121,12 @@ export const PreguntasFrecuentes = () => {
             }
             
         }else{//Agregar una nueva pregunta.
-            console.log(Status)
             if( Pregunta && Respuesta && (Status === true || Status === false) ){
                 const data ={
                         Pregunta,
                         Respuesta,
-                        Status
+                        Status,
+                        Orden
                     }
                     const POST = await nuevaFAQ(data);
                     
@@ -126,6 +138,10 @@ export const PreguntasFrecuentes = () => {
                         '',
                         'success'
                         )
+
+                        //Hace GET de formularios------------------
+                        actualizarPreguntas();
+
                     }else{
                         Swal.fire(
                             'Pregunta no agregada',
@@ -165,7 +181,11 @@ export const PreguntasFrecuentes = () => {
                     'Eliminada',
                     '',
                     'success'
-                    )
+                    );
+                    
+                    //Hace GET de formularios------------------
+                    actualizarPreguntas();
+
                 }else{
                     Swal.fire(
                         'Pregunta no eliminada',
@@ -187,8 +207,16 @@ export const PreguntasFrecuentes = () => {
                     {
                         faqs &&
                             faqs.map( (faq, i) => (
-                                <div key={ faq.Id } onClick={ () => { handleActiveFAQ( faq, i ) } }>
-                                    <h6 className={ `general__click ${!faq.Status && 'text-danger'} pb-2` }>{++i}. { faq.Pregunta }</h6>
+                                <div className="d-flex" key={ faq.Id } onClick={ () => { handleActiveFAQ( faq, i ) } }>
+                                    <div>
+                                        {
+                                            !faq.Status
+                                                ? <BsCircleFill className="mb-1 mx-1 text-danger" />
+                                                : <BsCircleFill className="mb-1 mx-1 text-success" />
+                                        }
+                                       
+                                    </div>
+                                    <h6 className={ `general__click pb-2` }>{++i}. { faq.Pregunta }</h6>
                                 </div>
                             ))
                     }
