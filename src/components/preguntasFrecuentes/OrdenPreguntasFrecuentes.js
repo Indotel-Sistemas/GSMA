@@ -21,19 +21,16 @@ export const OrdenPreguntasFrecuentes = ({history}) => {
         setFaqs(data) //faqs = data
     })
     }, [setFaqs])//Si uno de los valores del arreglo cambia se ejecuta el useEffect
- 
-    //  const actualizarPreguntas = () =>{
-    //      GETfaq().then(data => { //Se obtienen las preguntas de la base de datos.
-    //          setFaqs(data) //faqs = data
-    //      })
-    //  }
 
+    //Manejador de arratre y suelta de posicion----------------------------------------------------------
     const handleOnDragEnd = (result) => {
-        if(!result.destination) return;
-        const items = [...faqs];
-        const [recordedItem] = items.splice(result.source.index, 1);
-        items.splice(result.destination.index, 0, recordedItem);
-        setFaqs(items);
+        if(!result.destination) return; //evita erros si se saca la pregunta se saca del FAQ BOX 
+
+        const items = [...faqs]; // nuevo array con las faqs
+        const [recordedItem] = items.splice(result.source.index, 1); //faq que se ha movido de lugar
+        items.splice(result.destination.index, 0, recordedItem); // se modifica el arreglo introduciendo el arreglo en la nueva posicion
+        
+        setFaqs(items); //se actualiza el estado de las faqs con el nuevo arreglo
     }
 
     const handleGuardar = () => {
@@ -48,7 +45,6 @@ export const OrdenPreguntasFrecuentes = ({history}) => {
                     editarFAQOrden(faqs)
                     history.push('/PreguntasFrecuentes')
                 }})
-                
     }
 
     return (
