@@ -29,6 +29,7 @@ export const OrdenPreguntasFrecuentes = ({history}) => {
     //  }
 
     const handleOnDragEnd = (result) => {
+        if(!result.destination) return;
         const items = [...faqs];
         const [recordedItem] = items.splice(result.source.index, 1);
         items.splice(result.destination.index, 0, recordedItem);
