@@ -34,3 +34,12 @@ export const eliminarFAQ = (Id) => {
             return response.status
         })
 }
+
+export const editarFAQOrden = (data) => {
+
+    return Axios.post(`http://localhost:5000/FAQ/editOrder`,[
+        ...data
+    ]).then(response=>{
+        return response.status
+    })
+}

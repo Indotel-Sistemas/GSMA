@@ -12,9 +12,13 @@
     overflow-y: scroll;
 }
 
+.faq__editOrder{
+    width: 650px;
+    min-width: 650px;
+}
 
 .faq__form{
- padding: 0 50px;   
+    padding: 0 50px;   
 }
 
 
@@ -23,8 +27,14 @@
         min-height: 200px;
         max-height: 200px;
     }
+
+    .faq__editOrder{
+        width: 300px;
+        min-width: 300px;
+    }
+
     .faq__form{
-        padding: 30px 0px;   
+        padding: 10px 0px;   
     }
        
 }

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 import { BsCircleFill } from "react-icons/bs";
+import { GoListUnordered } from "react-icons/go";
 
 
-import { GETfaq, nuevaFAQ, editarFAQ, eliminarFAQ } from '../../helpers/database'
+import { GETfaq, nuevaFAQ, editarFAQ, eliminarFAQ } from '../../helpers/database';
 import { useForm } from "../../hooks/useForm";
+import { Link } from 'react-router-dom';
 
 export const PreguntasFrecuentes = () => {
     // State de preguntas frecuentes----------------------------------------------------------------------------------
@@ -202,28 +204,38 @@ export const PreguntasFrecuentes = () => {
         <>  
             <div className="general__mainContainer">    
                 {/* List Box------------------------------------------------------------------------ */}
-                
-                <div className="faq__listbox">
-                    {
-                        faqs &&
+                <div>
+                    <div className="faq__listbox mb-2">
+                        {
+                            faqs &&
                             faqs.map( (faq, i) => (
                                 <div className="d-flex" key={ faq.Id } onClick={ () => { handleActiveFAQ( faq, i ) } }>
                                     <div>
                                         {
-                                            !faq.Status
-                                                ? <BsCircleFill className="mb-1 mx-1 text-danger" />
-                                                : <BsCircleFill className="mb-1 mx-1 text-success" />
+                                        !faq.Status
+                                            ? <BsCircleFill className="mb-1 mx-1 text-danger" />
+                                            : <BsCircleFill className="mb-1 mx-1 text-success" />
                                         }
-                                       
                                     </div>
                                     <h6 className={ `general__click pb-2` }>{++i}. { faq.Pregunta }</h6>
                                 </div>
                             ))
-                    }
+                        }
+                    </div>
+
+                    {/* Pantalla de cambiar orden------------------------------ */}
+                    <Link className='general__link' to='/OrdenPreguntasFrecuentes'>
+                        <small>
+                            <span 
+                                className="mx-1 text-info d-flex align-items-center">
+                                    <GoListUnordered /> Editar orden 
+                            </span>
+                        </small>
+                    </Link>
                 </div>
 
                 {/* Formulario------------------------------------------------------------------------ */}
-                <div className="faq__form col-8">
+                <div className="faq__form col-9">
 
                     {//Titulo de formulario--------------------------------------------------
                         activeFAQ.Id //Si hay una pregunta activa
