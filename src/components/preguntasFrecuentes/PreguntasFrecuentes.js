@@ -90,7 +90,7 @@ export const PreguntasFrecuentes = () => {
         e.preventDefault(); //Previene la actualizacion del formulario.
         const Orden = faqs.length === 0 ? 1 : faqs.length + 1 ;
         
-        if(activeFAQ.Id){ //Si hay  Id es actualizacion de pregunta existente.
+        if(activeFAQ.Id){ //Si hay Id es actualizacion de pregunta existente.
            
             const data ={
                 Id: activeFAQ.Id,
@@ -134,6 +134,7 @@ export const PreguntasFrecuentes = () => {
                     
                     if(POST === 200){
                         reset();
+                        setActiveFAQ([]);
                         setStatus(null);
                         Swal.fire(
                         'Agregada',

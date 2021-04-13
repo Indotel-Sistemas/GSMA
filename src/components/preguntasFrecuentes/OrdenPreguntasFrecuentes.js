@@ -6,10 +6,11 @@ import { BsCircleFill } from 'react-icons/bs';
 import { GrDrag } from 'react-icons/gr';
 
 import { GETfaq, editarFAQOrden } from '../../helpers/database';
+import Swal from 'sweetalert2';
 
 
-export const OrdenPreguntasFrecuentes = () => {
-
+export const OrdenPreguntasFrecuentes = ({history}) => {
+    
     // State de preguntas frecuentes----------------------------------------------------------------------------------
     const [faqs, setFaqs] = useState([]);
 
@@ -35,7 +36,18 @@ export const OrdenPreguntasFrecuentes = () => {
     }
 
     const handleGuardar = () => {
-        editarFAQOrden(faqs)
+
+         Swal.fire({ 
+                text: '¿Guardar cambios?',
+                showCancelButton: true,
+                confirmButtonText: `Guardar`,
+              }).then((result) => {
+                if (result.isConfirmed) {
+               
+                    editarFAQOrden(faqs)
+                    history.push('/PreguntasFrecuentes')
+                }})
+                
     }
 
     return (
