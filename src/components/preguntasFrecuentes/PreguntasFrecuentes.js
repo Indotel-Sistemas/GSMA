@@ -275,7 +275,7 @@ export const PreguntasFrecuentes = () => {
                       
                 
                             <label htmlFor="Respuesta">Status</label>
-                            <div className="d-flex mb-4">
+                            <div className="d-flex mb-3">
                                 <div className="form-check ">
                                     <input className="form-check-input" type="radio" name="Status" value={ true } checked={ activeFAQ.Status === true || Status === true }  onChange={ handleStatus } />
                                     <label className="form-check-label" htmlFor="flexRadioDefault1">
